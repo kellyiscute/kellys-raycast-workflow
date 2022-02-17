@@ -1,4 +1,4 @@
-import {List, Icon, useNavigation, ActionPanel, Action} from "@raycast/api";
+import {List, useNavigation, ActionPanel, Action} from "@raycast/api";
 import ReposPage from "../pages/repos";
 
 export default function Actions() {
