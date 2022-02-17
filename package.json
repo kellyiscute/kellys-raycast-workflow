@@ -12,6 +12,12 @@
       "title": "kl",
       "description": "",
       "mode": "view"
+    },
+    {
+      "name": "repos",
+      "title": "View repos",
+      "description": "",
+      "mode": "view"
     }
   ],
   "dependencies": {

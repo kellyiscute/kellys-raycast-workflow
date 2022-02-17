@@ -6,7 +6,7 @@ export default function Actions() {
 
   const gotoRepoAction = (
     <ActionPanel>
-      <Action title="" onAction={() => push(<ReposPage />)} />
+      <Action title="Goto Repo" onAction={() => push(<ReposPage />)} />
     </ActionPanel>
   )
 
