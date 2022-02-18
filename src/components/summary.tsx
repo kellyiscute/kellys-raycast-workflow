@@ -1,9 +1,15 @@
-import { Action, ActionPanel, Icon, List, showToast, Toast } from "@raycast/api";
+import { Action, ActionPanel, Icon, List, LocalStorage, showToast, Toast } from "@raycast/api";
 import { useEffect, useState } from "react";
 import * as clash from "../actions/clash";
+import {PreferencesNames} from "../constants";
 
-export default function Summary() {
+interface ISummaryProps {
+  onLoaded?: () => void;
+}
+
+export default function Summary({ onLoaded }: ISummaryProps) {
   const [proxyMode, setProxyMode] = useState<string>("");
+  const [clashEnabled, setClashEnabled] = useState<boolean>();
   const [loaded, setLoaded] = useState(false);
 
   const switchMode = async () => {
@@ -34,8 +40,11 @@ export default function Summary() {
 
   const getData = async () => {
     const proxy = await clash.getProxyMode();
+    const clashEnabledPref = await LocalStorage.getItem<boolean>(PreferencesNames.CLASH_CONTROLLER_ENABLED);
+    setClashEnabled(clashEnabledPref ?? true);
     setProxyMode(proxy);
     setLoaded(true);
+    onLoaded && onLoaded();
   };
 
   useEffect(() => {
@@ -44,16 +53,21 @@ export default function Summary() {
 
   return loaded ? (
     <List.Section title="Summary">
-      <List.Item
-        title="ProxyMode"
-        icon={Icon.Globe}
-        accessoryTitle={proxyMode ?? ""}
-        actions={
-          <ActionPanel>
-            <Action title="ChangeMode" onAction={switchMode} />
-          </ActionPanel>
-        }
-      />
+      {
+        clashEnabled ? 
+          <List.Item
+            title="ProxyMode"
+            icon={Icon.Globe}
+            accessoryTitle={proxyMode ?? ""}
+            actions={
+              <ActionPanel>
+                <Action title="ChangeMode" onAction={switchMode} />
+              </ActionPanel>
+            }
+          />
+        :
+          null
+      }
 
       <List.Item title="Nothing" icon={Icon.Text} subtitle="Nvim" accessoryTitle="CurrentProject" />
       <List.Item title="Nothing" icon={Icon.Text} subtitle="VsCode" accessoryTitle="CurrentProject" />

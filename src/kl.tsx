@@ -1,4 +1,5 @@
 import { Action, ActionPanel, Icon, List, LocalStorage, showToast, Toast, useNavigation } from "@raycast/api";
+import {useState} from "react";
 import { scanRepos } from "./actions/scan-repes";
 import Actions from "./components/actions";
 import Summary from "./components/summary";
@@ -7,6 +8,7 @@ import PrefPanel from "./pages/pref";
 
 export default function KellyWorkflow() {
   const { push } = useNavigation();
+  const [loaded, setLoaded] = useState(false);
 
   const openPreferencesAction = (
     <ActionPanel>
@@ -39,13 +41,17 @@ export default function KellyWorkflow() {
   );
 
   return (
-    <List>
-      <Summary />
-      <Actions />
-      <List.Section title="Preferences">
-        <List.Item title="Open Preferences" icon={Icon.Gear} actions={openPreferencesAction} />
-        <List.Item title="Scan Repos" icon={Icon.MagnifyingGlass} actions={scanReposAction} />
-      </List.Section>
+    <List isLoading={!loaded}>
+      <Summary onLoaded={() => setLoaded(true)}/>
+      {
+        loaded ? <>
+          <Actions />
+          <List.Section title="Preferences">
+            <List.Item title="Open Preferences" icon={Icon.Gear} actions={openPreferencesAction} />
+            <List.Item title="Scan Repos" icon={Icon.MagnifyingGlass} actions={scanReposAction} />
+          </List.Section>
+        </> : null
+      }
     </List>
-  );
+  )
 }

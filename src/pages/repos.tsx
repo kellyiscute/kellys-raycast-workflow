@@ -1,7 +1,7 @@
 import {Action, ActionPanel, getApplications, List, LocalStorage, open, showToast, Toast} from "@raycast/api";
 import {useEffect, useState} from "react";
 import {IScannedRepos} from "../actions/scan-repes";
-import {StorageNames} from "../constants";
+import {PreferencesNames, StorageNames} from "../constants";
 
 export default function ReposPage() {
   const [repos, setRepos] = useState<IScannedRepos[] | undefined>(undefined);
@@ -20,17 +20,18 @@ export default function ReposPage() {
   }, [])
 
   const openWithCode = async (dir: string) => {
+    const appName = await LocalStorage.getItem<string>(PreferencesNames.DEFAULT_DEITOR) ?? "Visual Studio Code";
     const apps = await getApplications()
-    const vscode = apps.find(a => a.name === "Visual Studio Code")
-    if (!vscode) {
+    const app = apps.find(a => a.name === appName)
+    if (!app) {
       showToast({
         title: "Unable to open repo",
-        message: "vscode not found",
+        message: `${appName} not found`,
         style: Toast.Style.Failure,
       })
       return;
     }
-    await open(dir, vscode)
+    await open(dir, app)
   }
 
   return (

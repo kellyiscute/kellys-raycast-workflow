@@ -4,12 +4,12 @@ A [Raycast](https://raycast.com) extension for me.
 ## Features
 - [x] Control `Clash` proxy mode
 - [x] Scan local repos
-- [ ]  Open repos with custom editor (currently set to vscode. Customizing in progress)
-- [ ]  VsCode integration
-- [ ]  [Tabby](https://tabby.sh) integration
-- [ ]  Nvim integration
-- [ ]  Gitlab integration
-- [ ]  Github integration
+- [x] Open repos with custom editor
+- [ ] VsCode integration
+- [ ] [Tabby](https://tabby.sh) integration
+- [ ] Nvim integration
+- [ ] Gitlab integration
+- [ ] Github integration
 
 ## Installing
 *Warning*: This is still in alpha stage
