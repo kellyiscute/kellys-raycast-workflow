@@ -11,7 +11,7 @@ export default function Actions() {
   )
 
   return (
-    <List.Section>
+    <List.Section title="Actions">
       <List.Item title="Goto Repo" icon={{source: "repo.png"}} actions={gotoRepoAction} />
     </List.Section>
   )

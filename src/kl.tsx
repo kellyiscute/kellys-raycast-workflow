@@ -1,10 +1,11 @@
 import { Action, ActionPanel, Icon, List, LocalStorage, showToast, Toast, useNavigation } from "@raycast/api";
-import {useState} from "react";
+import { useEffect, useState } from "react";
 import { scanRepos } from "./actions/scan-repes";
 import Actions from "./components/actions";
 import Summary from "./components/summary";
-import {StorageNames} from "./constants";
+import { StorageNames } from "./constants";
 import PrefPanel from "./pages/pref";
+import { loadPrefs } from "./utils/pref-helper";
 
 export default function KellyWorkflow() {
   const { push } = useNavigation();
@@ -17,7 +18,7 @@ export default function KellyWorkflow() {
   );
 
   const doScanRepos = async () => {
-    const dirs = await LocalStorage.getItem<string>("pref.searchDir");
+    const dirs = globalThis.prefs.repoSearchDir;
     if (!dirs) {
       showToast({ title: "Scan Repos Failed", message: "No scan dirs set" });
       return;
@@ -40,17 +41,23 @@ export default function KellyWorkflow() {
     </ActionPanel>
   );
 
+  useEffect(() => {
+    loadPrefs().then(() => setLoaded(true));
+  }, [])
+
   return (
     <List isLoading={!loaded}>
-      <Summary onLoaded={() => setLoaded(true)}/>
-      {
-        loaded ? <>
+      { 
+        loaded ? 
+        <>
+          <Summary />
           <Actions />
           <List.Section title="Preferences">
             <List.Item title="Open Preferences" icon={Icon.Gear} actions={openPreferencesAction} />
             <List.Item title="Scan Repos" icon={Icon.MagnifyingGlass} actions={scanReposAction} />
           </List.Section>
-        </> : null
+        </>
+        : null
       }
     </List>
   )
