@@ -1,4 +1,4 @@
-declare module globalThis {
+declare namespace globalThis {
   interface IPrefs {
     clash: {
       enabled: boolean;
